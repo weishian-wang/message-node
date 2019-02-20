@@ -6,13 +6,25 @@ import MainNav from './components/Navigation/MainNav/MainNav';
 import './App.css';
 
 class App extends Component {
+  state = {
+    isAuth: true,
+    token: null
+  };
+
+  logoutHandler = () => {
+    this.setState({ isAuth: false, token: null });
+  };
+
   render() {
     return (
       <Fragment>
         <Layout
           header={
             <Toolbar>
-              <MainNav />
+              <MainNav
+                isAuth={this.state.isAuth}
+                onLogout={this.logoutHandler}
+              />
             </Toolbar>
           }
         />
