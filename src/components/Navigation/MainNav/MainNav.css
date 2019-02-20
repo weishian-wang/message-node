@@ -1,0 +1,6 @@
+.main-nav {
+  height: 100%;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+}
