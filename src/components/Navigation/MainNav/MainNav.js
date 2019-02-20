@@ -9,7 +9,6 @@ const MainNav = props => (
     <div className='main-nav__logo'>
       <Logo />
     </div>
-    <div className='spacer' />
     <ul className='main-nav__items'>
       <NavItems isAuth={props.isAuth} onLogout={props.onLogout} />
     </ul>
