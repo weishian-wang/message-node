@@ -14,11 +14,16 @@ class App extends Component {
     authLoading: false
   };
 
-  logoutHandler = () => {
+  signoutHandler = () => {
     this.setState({ isAuth: false, token: null });
   };
 
-  loginHandler = () => {};
+  signinHandler = (email, password) => {
+    console.log('email:', email);
+    console.log('password:', password);
+    console.log('You have signed in!');
+    this.setState({ isAuth: true });
+  };
 
   signupHandler = () => {};
 
@@ -28,9 +33,7 @@ class App extends Component {
         <Route
           path='/'
           exact
-          render={props => (
-            <SignInPage/>
-          )}
+          render={props => <SignInPage onSignin={this.signinHandler} />}
         />
         <Route path='/signup' exact />
         <Redirect to='/' />
@@ -52,7 +55,7 @@ class App extends Component {
         <TopAppBar>
           <NavButtons
             isAuth={this.state.isAuth}
-            onLogout={this.logoutHandler}
+            onSignout={this.signoutHandler}
           />
         </TopAppBar>
         {routes}

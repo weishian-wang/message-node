@@ -20,7 +20,7 @@ const NavButtons = props => [
         </NavLink>
       </Button>
     )),
-  props.isAuth && <Button key='signout' onClick={props.onLogout}>Sign Out</Button>
+  props.isAuth && <Button key='signout' onClick={props.onSignout}>Sign Out</Button>
 ];
 
 export default NavButtons;
