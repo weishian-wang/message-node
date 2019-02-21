@@ -16,9 +16,11 @@ class App extends Component {
 
   signoutHandler = () => {
     this.setState({ isAuth: false, token: null });
+    this.setState({ authLoading: false });
   };
 
   signinHandler = (email, password) => {
+    this.setState({ authLoading: true });
     console.log('email:', email);
     console.log('password:', password);
     console.log('You have signed in!');
@@ -33,7 +35,13 @@ class App extends Component {
         <Route
           path='/'
           exact
-          render={props => <SignInPage onSignin={this.signinHandler} />}
+          render={props => (
+            <SignInPage
+              {...props}
+              onSignin={this.signinHandler}
+              loading={this.state.authLoading}
+            />
+          )}
         />
         <Route path='/signup' exact />
         <Redirect to='/' />

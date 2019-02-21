@@ -113,6 +113,7 @@ class SignIn extends Component {
                     name='email'
                     autoComplete='email'
                     autoFocus
+                    disabled={this.props.loading}
                     onChange={this.onEmailChange}
                   />
                   {submitted && errors.email && (
@@ -126,6 +127,7 @@ class SignIn extends Component {
                     type='password'
                     id='password'
                     autoComplete='current-password'
+                    disabled={this.props.loading}
                     onChange={this.onPasswordChange}
                   />
                   {submitted && errors.password && (
@@ -142,8 +144,9 @@ class SignIn extends Component {
                   variant='contained'
                   color='primary'
                   className={classes.submit}
+                  disabled={this.props.loading}
                 >
-                  Sign in
+                  {this.props.loading ? 'Loading...' : 'Sign in'}
                 </Button>
               </Fragment>
             )}
