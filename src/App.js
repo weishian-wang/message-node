@@ -3,7 +3,8 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import TopAppBar from './components/TopAppBar/TopAppBar';
 import NavButtons from './components/NavButtons/NavButtons';
-import SignInPage from './pages/Auth/SignIn';
+import SigninPage from './pages/Auth/Signin';
+import SignupPage from './pages/Auth/Signup';
 import './App.css';
 
 class App extends Component {
@@ -27,7 +28,14 @@ class App extends Component {
     this.setState({ isAuth: true });
   };
 
-  signupHandler = () => {};
+  signupHandler = (name, email, password) => {
+    this.setState({ isAuth: false });
+    console.log('name:', name);
+    console.log('email:', email);
+    console.log('password:', password);
+    console.log('You have signed up successfully!');
+    this.props.history.replace('/');
+  };
 
   render() {
     let routes = (
@@ -36,14 +44,24 @@ class App extends Component {
           path='/'
           exact
           render={props => (
-            <SignInPage
+            <SigninPage
               {...props}
               onSignin={this.signinHandler}
               loading={this.state.authLoading}
             />
           )}
         />
-        <Route path='/signup' exact />
+        <Route
+          path='/signup'
+          exact
+          render={props => (
+            <SignupPage
+              {...props}
+              onSignup={this.signupHandler}
+              loading={this.state.authLoading}
+            />
+          )}
+        />
         <Redirect to='/' />
       </Switch>
     );

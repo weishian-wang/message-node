@@ -4,11 +4,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -17,6 +15,13 @@ import { FormValidation } from 'calidation';
 import './Auth.css';
 
 const formConfig = {
+  name: {
+    isRequired: 'Your name is required',
+    isMinLength: {
+      message: 'Your name must at least be 2 characters long',
+      length: 2
+    }
+  },
   email: {
     isRequired: 'Email address is required',
     isEmail: 'Please enter a valid email'
@@ -63,10 +68,15 @@ const styles = theme => ({
   }
 });
 
-class Signin extends Component {
+class Signup extends Component {
   state = {
+    name: '',
     email: '',
     password: ''
+  };
+
+  onNameChange = event => {
+    this.setState({ name: event.target.value });
   };
 
   onEmailChange = event => {
@@ -77,11 +87,11 @@ class Signin extends Component {
     this.setState({ password: event.target.value });
   };
 
-  onSubmitSignin = ({ errors, fields, isValid }) => {
-    const { email, password } = this.state;
+  onSubmitSignup = ({ errors, fields, isValid }) => {
+    const { name, email, password } = this.state;
     if (isValid) {
       console.log('Valid');
-      this.props.onSignin(email, password);
+      this.props.onSignup(name, email, password);
     } else {
       console.log('Invalid');
     }
@@ -94,25 +104,38 @@ class Signin extends Component {
         <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <AssignmentOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Sign in
+            Sign up
           </Typography>
           <FormValidation
             config={formConfig}
-            onSubmit={this.onSubmitSignin}
+            onSubmit={this.onSubmitSignup}
             className={classes.form}
           >
             {({ errors, submitted }) => (
               <Fragment>
+                <FormControl margin='normal' required fullWidth>
+                  <InputLabel htmlFor='name'>Name</InputLabel>
+                  <Input
+                    id='name'
+                    name='name'
+                    autoComplete='name'
+                    autoFocus
+                    disabled={this.props.loading}
+                    onChange={this.onNameChange}
+                  />
+                  {submitted && errors.name && (
+                    <p className='error'>{errors.name}</p>
+                  )}
+                </FormControl>
                 <FormControl margin='normal' required fullWidth>
                   <InputLabel htmlFor='email'>Email Address</InputLabel>
                   <Input
                     id='email'
                     name='email'
                     autoComplete='email'
-                    autoFocus
                     disabled={this.props.loading}
                     onChange={this.onEmailChange}
                   />
@@ -134,10 +157,6 @@ class Signin extends Component {
                     <p className='error'>{errors.password}</p>
                   )}
                 </FormControl>
-                <FormControlLabel
-                  control={<Checkbox value='remember' color='primary' />}
-                  label='Remember me'
-                />
                 <Button
                   type='submit'
                   fullWidth
@@ -146,7 +165,7 @@ class Signin extends Component {
                   className={classes.submit}
                   disabled={this.props.loading}
                 >
-                  {this.props.loading ? 'Loading...' : 'Sign in'}
+                  {this.props.loading ? 'Loading...' : 'Sign up'}
                 </Button>
               </Fragment>
             )}
@@ -157,8 +176,8 @@ class Signin extends Component {
   }
 }
 
-Signin.propTypes = {
+Signup.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Signin);
+export default withStyles(styles)(Signup);
