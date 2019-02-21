@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-import Layout from './components/Layout/Layout';
-import Toolbar from './components/Toolbar/Toolbar';
-import MainNav from './components/Navigation/MainNav/MainNav';
+import TopAppBar from './components/TopAppBar/TopAppBar';
+import NavButtons from './components/NavButtons/NavButtons';
 import './App.css';
 
 class App extends Component {
   state = {
     isAuth: true,
-    token: null
+    token: null,
+    userId: null
   };
 
   logoutHandler = () => {
@@ -41,16 +41,9 @@ class App extends Component {
 
     return (
       <Fragment>
-        <Layout
-          header={
-            <Toolbar>
-              <MainNav
-                isAuth={this.state.isAuth}
-                onLogout={this.logoutHandler}
-              />
-            </Toolbar>
-          }
-        />
+        <TopAppBar>
+          <NavButtons isAuth={this.state.isAuth} onLogout={this.logoutHandler} />
+        </TopAppBar>
         {routes}
       </Fragment>
     );

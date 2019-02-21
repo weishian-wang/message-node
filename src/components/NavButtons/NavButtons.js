@@ -1,29 +1,26 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
 
-import './NavItems.css';
+import './NavButtons.css';
 
-const navItems = [
+const navbuttons = [
   { id: 'feed', text: 'Feed', link: '/', auth: true },
   { id: 'login', text: 'Login', link: '/', auth: false },
   { id: 'signup', text: 'Signup', link: '/signup', auth: false }
 ];
 
-const NavItems = props => [
-  ...navItems
+const NavButtons = props => [
+  ...navbuttons
     .filter(item => item.auth === props.isAuth)
     .map(item => (
-      <li className='navigation-item' key={item.id}>
+      <Button key={item.id}>
         <NavLink to={item.link} exact>
           {item.text}
         </NavLink>
-      </li>
+      </Button>
     )),
-  props.isAuth && (
-    <li className='navigation-item' key='logout'>
-      <button onClick={props.onLogout}>Logout</button>
-    </li>
-  )
+  props.isAuth && <Button key='logout' onClick={props.onLogout}>Logout</Button>
 ];
 
-export default NavItems;
+export default NavButtons;
