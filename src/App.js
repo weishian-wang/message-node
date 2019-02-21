@@ -3,13 +3,15 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import TopAppBar from './components/TopAppBar/TopAppBar';
 import NavButtons from './components/NavButtons/NavButtons';
+import SignInPage from './pages/Auth/SignIn';
 import './App.css';
 
 class App extends Component {
   state = {
-    isAuth: true,
+    isAuth: false,
     token: null,
-    userId: null
+    userId: null,
+    authLoading: false
   };
 
   logoutHandler = () => {
@@ -23,7 +25,13 @@ class App extends Component {
   render() {
     let routes = (
       <Switch>
-        <Route path='/' exact />
+        <Route
+          path='/'
+          exact
+          render={props => (
+            <SignInPage/>
+          )}
+        />
         <Route path='/signup' exact />
         <Redirect to='/' />
       </Switch>
@@ -42,7 +50,10 @@ class App extends Component {
     return (
       <Fragment>
         <TopAppBar>
-          <NavButtons isAuth={this.state.isAuth} onLogout={this.logoutHandler} />
+          <NavButtons
+            isAuth={this.state.isAuth}
+            onLogout={this.logoutHandler}
+          />
         </TopAppBar>
         {routes}
       </Fragment>

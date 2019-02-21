@@ -6,8 +6,8 @@ import './NavButtons.css';
 
 const navbuttons = [
   { id: 'feed', text: 'Feed', link: '/', auth: true },
-  { id: 'login', text: 'Login', link: '/', auth: false },
-  { id: 'signup', text: 'Signup', link: '/signup', auth: false }
+  { id: 'signin', text: 'Sign In', link: '/', auth: false },
+  { id: 'signup', text: 'Sign Up', link: '/signup', auth: false }
 ];
 
 const NavButtons = props => [
@@ -15,12 +15,12 @@ const NavButtons = props => [
     .filter(item => item.auth === props.isAuth)
     .map(item => (
       <Button key={item.id}>
-        <NavLink to={item.link} exact>
+        <NavLink to={item.link} exact activeStyle={{color: 'orange', textDecoration: 'none'}} >
           {item.text}
         </NavLink>
       </Button>
     )),
-  props.isAuth && <Button key='logout' onClick={props.onLogout}>Logout</Button>
+  props.isAuth && <Button key='signout' onClick={props.onLogout}>Sign Out</Button>
 ];
 
 export default NavButtons;
