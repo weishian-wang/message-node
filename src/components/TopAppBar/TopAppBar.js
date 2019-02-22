@@ -21,7 +21,7 @@ const TopAppBar = props => {
     <div className={classes.root}>
       <AppBar position='static'>
         <Toolbar>
-          <Typography variant='h6' color='inherit' className={classes.grow}>
+          <Typography variant='h5' color='inherit' className={classes.grow}>
             <NavLink to='/'>Message Node</NavLink>
           </Typography>
           {props.children}

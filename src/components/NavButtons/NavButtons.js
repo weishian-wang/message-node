@@ -14,13 +14,21 @@ const NavButtons = props => [
   ...navbuttons
     .filter(item => item.auth === props.isAuth)
     .map(item => (
-      <Button key={item.id}>
-        <NavLink to={item.link} exact activeStyle={{color: 'orange', textDecoration: 'none'}} >
+      <Button key={item.id} size='large'>
+        <NavLink
+          to={item.link}
+          exact
+          activeStyle={{ color: 'orange', textDecoration: 'none' }}
+        >
           {item.text}
         </NavLink>
       </Button>
     )),
-  props.isAuth && <Button key='signout' onClick={props.onSignout}>Sign Out</Button>
+  props.isAuth && (
+    <Button key='signout' onClick={props.onSignout} size='large'>
+      Sign Out
+    </Button>
+  )
 ];
 
 export default NavButtons;
