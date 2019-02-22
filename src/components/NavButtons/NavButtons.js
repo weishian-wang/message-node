@@ -14,7 +14,7 @@ const NavButtons = props => [
   ...navbuttons
     .filter(item => item.auth === props.isAuth)
     .map(item => (
-      <Button key={item.id} size='large'>
+      <Button key={item.id}>
         <NavLink
           to={item.link}
           exact
@@ -25,7 +25,7 @@ const NavButtons = props => [
       </Button>
     )),
   props.isAuth && (
-    <Button key='signout' onClick={props.onSignout} size='large'>
+    <Button key='signout' onClick={props.onSignout}>
       Sign Out
     </Button>
   )

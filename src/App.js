@@ -5,11 +5,12 @@ import TopAppBar from './components/TopAppBar/TopAppBar';
 import NavButtons from './components/NavButtons/NavButtons';
 import SigninPage from './pages/Auth/Signin';
 import SignupPage from './pages/Auth/Signup';
+import FeedPage from './pages/Feed/Feed';
 import './App.css';
 
 class App extends Component {
   state = {
-    isAuth: false,
+    isAuth: true,
     token: null,
     userId: null,
     authLoading: false
@@ -69,7 +70,13 @@ class App extends Component {
     if (this.state.isAuth) {
       routes = (
         <Switch>
-          <Route path='/' exact />
+          <Route
+            path='/'
+            exact
+            render={props => (
+              <FeedPage userId={this.state.userId} token={this.state.token} />
+            )}
+          />
           <Route path='/:postId' />
           <Redirect to='/' />
         </Switch>
