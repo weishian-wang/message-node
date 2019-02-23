@@ -11,7 +11,11 @@ const styles = {
     flexGrow: 1
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
+    paddingLeft: '0.5rem'
+  },
+  navBtns: {
+    paddingRight: '0.5rem'
   }
 };
 
@@ -24,7 +28,9 @@ const TopAppBar = props => {
           <Typography variant='h5' color='inherit' className={classes.grow}>
             <NavLink to='/'>Message Node</NavLink>
           </Typography>
-          {props.children}
+          <div className={classes.navBtns}>
+            {props.children}
+          </div>
         </Toolbar>
       </AppBar>
     </div>

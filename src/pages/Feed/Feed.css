@@ -1,4 +1,8 @@
 .feed-control {
   text-align: center;
-  margin: 1rem 0;
+  padding: 1rem 0;
+}
+
+section.feed {
+  padding: 1rem 0;
 }

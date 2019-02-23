@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import green from '@material-ui/core/colors/green';
 
-import './FeedStatusForm.css';
+import './StatusForm.css';
 
 const styles = theme => ({
   root: {
@@ -47,7 +47,7 @@ const theme = createMuiTheme({
   typography: { useNextVariants: true }
 });
 
-const FeedStatusForm = props => {
+const StatusForm = props => {
   const { classes } = props;
 
   return (
@@ -56,6 +56,7 @@ const FeedStatusForm = props => {
         <form className={classes.form} onSubmit={props.onStatusSubmit}>
           <FormControl className={classes.formControl} margin='normal'>
             <TextField
+              label='Your status'
               placeholder={props.status}
               required
               variant='outlined'
@@ -76,8 +77,8 @@ const FeedStatusForm = props => {
   );
 };
 
-FeedStatusForm.propTypes = {
+StatusForm.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(FeedStatusForm);
+export default withStyles(styles)(StatusForm);
