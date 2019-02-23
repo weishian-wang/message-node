@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -26,11 +25,9 @@ const TopAppBar = props => {
       <AppBar position='static'>
         <Toolbar>
           <Typography variant='h5' color='inherit' className={classes.grow}>
-            <NavLink to='/'>Message Node</NavLink>
+            Message Node
           </Typography>
-          <div className={classes.navBtns}>
-            {props.children}
-          </div>
+          <div className={classes.navBtns}>{props.children}</div>
         </Toolbar>
       </AppBar>
     </div>

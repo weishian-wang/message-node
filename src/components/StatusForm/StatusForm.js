@@ -10,15 +10,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import green from '@material-ui/core/colors/green';
 
-import './StatusForm.css';
-
 const styles = theme => ({
   root: {
     width: 'auto',
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(500 + theme.spacing.unit * 3 * 2)]: {
-      width: 500,
+    [theme.breakpoints.up(540 + theme.spacing.unit * 3 * 2)]: {
+      width: 540,
       marginLeft: 'auto',
       marginRight: 'auto'
     }
@@ -64,11 +62,7 @@ const StatusForm = props => {
               onChange={props.onStatusChange}
             />
           </FormControl>
-          <Button
-            type='submit'
-            color='primary'
-            className={classes.submit}
-          >
+          <Button type='submit' color='primary' className={classes.submit}>
             Update
           </Button>
         </form>

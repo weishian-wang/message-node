@@ -6,6 +6,7 @@ import NavButtons from './components/NavButtons/NavButtons';
 import SigninPage from './pages/Auth/Signin';
 import SignupPage from './pages/Auth/Signup';
 import FeedPage from './pages/Feed/Feed';
+import SinglePostPage from './pages/Feed/SinglePost/SinglePost';
 import './App.css';
 
 class App extends Component {
@@ -74,10 +75,23 @@ class App extends Component {
             path='/'
             exact
             render={props => (
-              <FeedPage userId={this.state.userId} token={this.state.token} />
+              <FeedPage
+                {...props}
+                userId={this.state.userId}
+                token={this.state.token}
+              />
             )}
           />
-          <Route path='/:postId' />
+          <Route
+            path='/:postId'
+            render={props => (
+              <SinglePostPage
+                {...props}
+                userId={this.state.userId}
+                token={this.state.token}
+              />
+            )}
+          />
           <Redirect to='/' />
         </Switch>
       );

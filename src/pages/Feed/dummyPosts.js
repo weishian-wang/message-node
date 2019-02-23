@@ -1,6 +1,6 @@
 const posts = [
   {
-    _id: 101,
+    _id: '101',
     creator: {
       name: 'tester'
     },
@@ -10,7 +10,7 @@ const posts = [
     imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
   },
   {
-    _id: 102,
+    _id: '102',
     creator: {
       name: 'tester'
     },
@@ -20,7 +20,7 @@ const posts = [
     imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
   },
   {
-    _id: 103,
+    _id: '103',
     creator: {
       name: 'tester'
     },
@@ -30,7 +30,7 @@ const posts = [
     imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
   },
   {
-    _id: 104,
+    _id: '104',
     creator: {
       name: 'tester'
     },
@@ -40,7 +40,7 @@ const posts = [
     imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
   },
   {
-    _id: 105,
+    _id: '105',
     creator: {
       name: 'tester'
     },
@@ -50,7 +50,7 @@ const posts = [
     imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
   },
   {
-    _id: 106,
+    _id: '106',
     creator: {
       name: 'tester'
     },

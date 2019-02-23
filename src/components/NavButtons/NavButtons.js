@@ -2,8 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
-import './NavButtons.css';
-
 const navbuttons = [
   { id: 'feed', text: 'Feed', link: '/', auth: true },
   { id: 'signin', text: 'Sign In', link: '/', auth: false },
@@ -15,11 +13,7 @@ const NavButtons = props => [
     .filter(item => item.auth === props.isAuth)
     .map(item => (
       <Button key={item.id}>
-        <NavLink
-          to={item.link}
-          exact
-          activeStyle={{ color: 'orange', textDecoration: 'none' }}
-        >
+        <NavLink to={item.link} exact activeStyle={{ color: 'orange' }}>
           {item.text}
         </NavLink>
       </Button>

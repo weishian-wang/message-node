@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import cyan from '@material-ui/core/colors/cyan';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   card: {
@@ -23,7 +24,8 @@ const styles = theme => ({
     paddingTop: '56.25%' // 16:9
   },
   actions: {
-    display: 'flex'
+    display: 'flex',
+    justifyContent: 'flex-end'
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -40,9 +42,8 @@ const styles = theme => ({
   }
 });
 
-const ReviewCard = props => {
+const Post = props => {
   const { classes } = props;
-
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -64,7 +65,7 @@ const ReviewCard = props => {
       </CardContent>
       <CardActions className={classes.actions} disableActionSpacing>
         <Button size='small' color='primary'>
-          See More
+          <Link to={props.id}>See More</Link>
         </Button>
         <Button size='small' color='primary'>
           Edit
@@ -77,8 +78,8 @@ const ReviewCard = props => {
   );
 };
 
-ReviewCard.propTypes = {
+Post.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ReviewCard);
+export default withStyles(styles)(Post);

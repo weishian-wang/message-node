@@ -1,0 +1,9 @@
+a {
+  text-decoration: none;
+}
+
+header button span,
+header button span a
+ {
+  color: #eeeeee;
+}

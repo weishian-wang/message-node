@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 
 import StatusForm from '../../components/StatusForm/StatusForm';
-import ReviewCard from '../../components/Feed/Post/ReviewCard';
+import Post from '../../components/Feed/Post/Post';
 import './Feed.css';
 
 import dummyPosts from './dummyPosts';
@@ -48,7 +48,7 @@ class Feed extends Component {
         </section>
         <section className='feed'>
           {this.state.posts.map(post => (
-            <ReviewCard
+            <Post
               key={post._id}
               id={post._id}
               author={post.creator.name}
@@ -56,8 +56,6 @@ class Feed extends Component {
               title={post.title}
               image={post.imageUrl}
               content={post.content}
-              // onStartEdit={this.startEditPostHandler.bind(this, post._id)}
-              // onDelete={this.deletePostHandler.bind(this, post._id)}
             />
           ))}
         </section>
