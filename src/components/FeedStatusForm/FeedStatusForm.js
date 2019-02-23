@@ -10,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import green from '@material-ui/core/colors/green';
 
+import './FeedStatusForm.css';
+
 const styles = theme => ({
   root: {
     width: 'auto',

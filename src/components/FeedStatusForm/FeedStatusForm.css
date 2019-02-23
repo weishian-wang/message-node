@@ -1,0 +1,4 @@
+form > button > span {
+  color: green;
+  font-weight: bold;
+}

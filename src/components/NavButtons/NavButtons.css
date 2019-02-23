@@ -5,8 +5,3 @@ button span a
   text-decoration: none;
   color: #eeeeee;
 }
-
-form > button > span {
-  color: green;
-  font-weight: bold;
-}
