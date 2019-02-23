@@ -49,7 +49,7 @@ const FeedStatusForm = props => {
   const { classes } = props;
 
   return (
-    <div className={classes.root}>
+    <section className={classes.root}>
       <MuiThemeProvider theme={theme}>
         <form className={classes.form} onSubmit={props.onStatusSubmit}>
           <FormControl className={classes.formControl} margin='normal'>
@@ -63,7 +63,6 @@ const FeedStatusForm = props => {
           </FormControl>
           <Button
             type='submit'
-            variant='contained'
             color='primary'
             className={classes.submit}
           >
@@ -71,7 +70,7 @@ const FeedStatusForm = props => {
           </Button>
         </form>
       </MuiThemeProvider>
-    </div>
+    </section>
   );
 };
 
