@@ -58,7 +58,7 @@ const Post = props => {
       <CardMedia
         className={classes.media}
         image={props.image}
-        title='Paella dish'
+        alt=''
       />
       <CardContent>
         <Typography component='p'>{props.content}</Typography>

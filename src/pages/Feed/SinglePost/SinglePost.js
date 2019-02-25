@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 
 import './SinglePost.css';
 
@@ -9,7 +11,6 @@ class SinglePost extends Component {
   state = {
     title: 'Lizard',
     author: 'tester',
-    // date: new Date().toLocaleDateString('en-US'),
     date:
       new Intl.DateTimeFormat('en-US', options).format(new Date()) +
       ' ' +
@@ -27,18 +28,18 @@ class SinglePost extends Component {
   render() {
     return (
       <section className='single-post'>
-        <h4>Posted by {this.state.author}</h4>
-        <h6>{this.state.date}</h6>
+        <Typography variant='h6'>Posted by {this.state.author}</Typography>
+        <Typography variant='subtitle2' style={{ color: 'grey' }}>
+          {this.state.date}
+        </Typography>
+        <Divider />
         <div className='single-post__image'>
-          <h1>{this.state.title}</h1>
-          <CardMedia
-            component='img'
-            alt='Contemplative Reptile'
-            image={this.state.image}
-            title='Contemplative Reptile'
-          />
+          <CardMedia component='img' image={this.state.image} alt='' />
         </div>
-        <p>{this.state.content}</p>
+        <Typography variant='h4' gutterBottom>
+          {this.state.title}
+        </Typography>
+        <Typography variant='body1'>{this.state.content}</Typography>
       </section>
     );
   }

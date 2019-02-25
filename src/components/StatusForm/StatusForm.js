@@ -8,7 +8,7 @@ import {
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import green from '@material-ui/core/colors/green';
+import teal from '@material-ui/core/colors/teal';
 
 const styles = theme => ({
   root: {
@@ -40,7 +40,7 @@ const styles = theme => ({
 
 const theme = createMuiTheme({
   palette: {
-    primary: green
+    primary: teal
   },
   typography: { useNextVariants: true }
 });
@@ -55,8 +55,7 @@ const StatusForm = props => {
           <FormControl className={classes.formControl} margin='normal'>
             <TextField
               label='Your status'
-              placeholder={props.status}
-              required
+              value={props.status}
               variant='outlined'
               className={classes.margin}
               onChange={props.onStatusChange}

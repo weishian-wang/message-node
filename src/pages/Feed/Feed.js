@@ -3,13 +3,14 @@ import Button from '@material-ui/core/Button';
 
 import StatusForm from '../../components/StatusForm/StatusForm';
 import Post from '../../components/Feed/Post/Post';
+import FeedEdit from '../../components/Feed/FeedEdit/FeedEdit';
 import './Feed.css';
 
 import dummyPosts from './dummyPosts';
 
 class Feed extends Component {
   state = {
-    status: 'Your Status',
+    status: '',
     posts: dummyPosts,
     isEditing: false
   };
@@ -25,13 +26,20 @@ class Feed extends Component {
   };
 
   newPostHandler = () => {
-    console.log('You just added a new post!');
     this.setState({ isEditing: true });
+  };
+
+  closeDialogHandler = () => {
+    this.setState({ isEditing: false });
   };
 
   render() {
     return (
       <Fragment>
+        <FeedEdit
+          editing={this.state.isEditing}
+          onClose={this.closeDialogHandler}
+        />
         <StatusForm
           status={this.state.status}
           onStatusChange={this.statusInputChangeHandler}
