@@ -7,3 +7,7 @@ header button span a
  {
   color: #eeeeee;
 }
+
+.error {
+  color: red;
+}

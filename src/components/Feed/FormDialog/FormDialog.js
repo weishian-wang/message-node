@@ -15,8 +15,11 @@ const formConfig = {
   title: {
     isRequired: 'Title is required'
   },
+  image: {
+    isRequired: 'Image is required'
+  },
   content: {
-    isRequired: 'Content is also required',
+    isRequired: 'Content is required',
     isMinLength: {
       message: 'Content must at least be 2 characters long',
       length: 2
@@ -124,6 +127,7 @@ class FormDialog extends Component {
                   <Button color='primary' component='label'>
                     <input
                       id='image'
+                      name='image'
                       type='file'
                       accept='image/png, image/jpeg'
                       onChange={e => this.onImageChange(e.target.files)}
