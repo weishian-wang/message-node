@@ -1,8 +1,13 @@
 .new-post__preview-image {
-  padding-left: 0.5rem;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .thumbnail {
   width: 12rem;
   height: auto;
+}
+
+.error {
+  color: red;
 }

@@ -8,7 +8,10 @@ class FeedEdit extends Component {
   render() {
     return this.props.editing ? (
       <Fragment>
-        <FormDialog onClose={this.props.onClose}/>
+        <FormDialog
+          onCancelEdit={this.props.onCancelEdit}
+          onFinishEdit={this.props.onFinishEdit}
+        />
       </Fragment>
     ) : null;
   }

@@ -6,13 +6,75 @@ import Post from '../../components/Feed/Post/Post';
 import FeedEdit from '../../components/Feed/FeedEdit/FeedEdit';
 import './Feed.css';
 
-import dummyPosts from './dummyPosts';
+const dummyPosts = [
+  {
+    _id: '101',
+    creator: {
+      name: 'tester'
+    },
+    createdAt: new Date(),
+    title: 'Lizard',
+    content: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica',
+    imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
+  },
+  {
+    _id: '102',
+    creator: {
+      name: 'tester'
+    },
+    createdAt: new Date(),
+    title: 'Lizard',
+    content: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica',
+    imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
+  },
+  {
+    _id: '103',
+    creator: {
+      name: 'tester'
+    },
+    createdAt: new Date(),
+    title: 'Lizard',
+    content: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica',
+    imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
+  },
+  {
+    _id: '104',
+    creator: {
+      name: 'tester'
+    },
+    createdAt: new Date(),
+    title: 'Lizard',
+    content: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica',
+    imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
+  },
+  {
+    _id: '105',
+    creator: {
+      name: 'tester'
+    },
+    createdAt: new Date(),
+    title: 'Lizard',
+    content: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica',
+    imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
+  },
+  {
+    _id: '106',
+    creator: {
+      name: 'tester'
+    },
+    createdAt: new Date(),
+    title: 'Lizard',
+    content: 'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica',
+    imageUrl: 'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
+  },
+];
 
 class Feed extends Component {
   state = {
     status: '',
     posts: dummyPosts,
-    isEditing: false
+    isEditing: false,
+    editPost: null
   };
 
   statusInputChangeHandler = event => {
@@ -29,8 +91,13 @@ class Feed extends Component {
     this.setState({ isEditing: true });
   };
 
-  closeDialogHandler = () => {
-    this.setState({ isEditing: false });
+  cancelEditHandler = () => {
+    this.setState({ isEditing: false, editPost: null });
+  };
+
+  finishEditHandler = (postData) => {
+    console.log('Your post data has been received!');
+    console.log(postData);
   };
 
   render() {
@@ -38,7 +105,8 @@ class Feed extends Component {
       <Fragment>
         <FeedEdit
           editing={this.state.isEditing}
-          onClose={this.closeDialogHandler}
+          onCancelEdit={this.cancelEditHandler}
+          onFinishEdit={this.finishEditHandler}
         />
         <StatusForm
           status={this.state.status}
