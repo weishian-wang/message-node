@@ -19,6 +19,9 @@ const styles = theme => ({
     marginRight: 'auto',
     marginBottom: '1rem'
   },
+  avatar: {
+    backgroundColor: cyan[500]
+  },
   media: {
     height: 0,
     paddingTop: '56.25%' // 16:9
@@ -27,19 +30,6 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'flex-end'
   },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
-    })
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)'
-  },
-  avatar: {
-    backgroundColor: cyan[500]
-  }
 });
 
 const Post = props => {
@@ -48,18 +38,14 @@ const Post = props => {
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label='Recipe' className={classes.avatar}>
+          <Avatar aria-label='Post' className={classes.avatar}>
             P
           </Avatar>
         }
         title={props.title}
         subheader={props.date}
       />
-      <CardMedia
-        className={classes.media}
-        image={props.image}
-        alt=''
-      />
+      <CardMedia className={classes.media} image={props.image} alt='' />
       <CardContent>
         <Typography component='p'>{props.content}</Typography>
       </CardContent>
