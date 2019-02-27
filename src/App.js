@@ -7,6 +7,7 @@ import SigninPage from './pages/Auth/Signin';
 import SignupPage from './pages/Auth/Signup';
 import FeedPage from './pages/Feed/Feed';
 import SinglePostPage from './pages/Feed/SinglePost/SinglePost';
+import ErrorHandler from './components/ErrorHandler/ErrorHandler';
 import './App.css';
 
 class App extends Component {
@@ -14,7 +15,8 @@ class App extends Component {
     isAuth: true,
     token: null,
     userId: null,
-    authLoading: false
+    authLoading: false,
+    error: null
   };
 
   signoutHandler = () => {
@@ -37,6 +39,10 @@ class App extends Component {
     console.log('password:', password);
     console.log('You have signed up successfully!');
     this.props.history.replace('/');
+  };
+
+  errorHandler = () => {
+    this.setState({ error: null });
   };
 
   render() {
@@ -99,6 +105,7 @@ class App extends Component {
 
     return (
       <Fragment>
+        <ErrorHandler error={this.state.error} onHandle={this.errorHandler} />
         <TopAppBar>
           <NavButtons
             isAuth={this.state.isAuth}

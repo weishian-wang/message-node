@@ -6,14 +6,24 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import Divider from '@material-ui/core/Divider';
 import { generateBase64FromImage } from '../../../util/image';
 import { FormValidation } from 'calidation';
 
-import './FormDialog.css';
+import './NewPostHandler.css';
+
+const Transition = props => {
+  return <Slide direction='down' {...props} />;
+};
 
 const formConfig = {
   title: {
-    isRequired: 'Title is required'
+    isRequired: 'Title is required',
+    isMinLength: {
+      message: 'Title must at least be 2 characters long',
+      length: 2
+    }
   },
   image: {
     isRequired: 'Image is required'
@@ -21,8 +31,8 @@ const formConfig = {
   content: {
     isRequired: 'Content is required',
     isMinLength: {
-      message: 'Content must at least be 2 characters long',
-      length: 2
+      message: 'Content must at least be 5 characters long',
+      length: 5
     }
   }
 };
@@ -101,9 +111,11 @@ class FormDialog extends Component {
           onClose={this.onCloseHandler}
           onBackdropClick={this.onCloseHandler}
           fullWidth
+          TransitionComponent={Transition}
           aria-labelledby='form-dialog-title'
         >
           <DialogTitle id='form-dialog-title'>New Post</DialogTitle>
+          <Divider />
           <FormValidation config={formConfig} onSubmit={this.onSubmitShare}>
             {({ errors, submitted }) => (
               <Fragment>

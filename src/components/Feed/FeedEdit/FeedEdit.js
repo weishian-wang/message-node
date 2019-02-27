@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import FormDialog from '../FormDialog/FormDialog';
+import NewPostHandler from '../NewPostHandler/NewPostHandler';
 
 class FeedEdit extends Component {
   state = {};
@@ -8,7 +8,7 @@ class FeedEdit extends Component {
   render() {
     return this.props.editing ? (
       <Fragment>
-        <FormDialog
+        <NewPostHandler
           onCancelEdit={this.props.onCancelEdit}
           onFinishEdit={this.props.onFinishEdit}
         />
