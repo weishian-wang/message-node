@@ -45,6 +45,10 @@ class App extends Component {
     this.setState({ error: null });
   };
 
+  catchError = error => {
+    this.setState({ error: error });
+  };
+
   render() {
     let routes = (
       <Switch>
@@ -95,6 +99,7 @@ class App extends Component {
                 {...props}
                 userId={this.state.userId}
                 token={this.state.token}
+                catchError={this.catchError}
               />
             )}
           />

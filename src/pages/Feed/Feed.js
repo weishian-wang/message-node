@@ -128,6 +128,7 @@ class Feed extends Component {
         const post = {
           _id: resData.post._id,
           title: resData.post.title,
+          imageUrl: resData.post.imageUrl,
           content: resData.post.content,
           creator: resData.post.creator,
           createdAt: resData.post.createdAt

@@ -5,25 +5,45 @@ import Divider from '@material-ui/core/Divider';
 
 import './SinglePost.css';
 
-const options = { month: 'long' };
-
 class SinglePost extends Component {
   state = {
-    title: 'Lizard',
-    author: 'tester',
-    date:
-      new Intl.DateTimeFormat('en-US', options).format(new Date()) +
-      ' ' +
-      new Date().getDate() +
-      ', ' +
-      new Date().getFullYear() +
-      ' at ' +
-      new Date().toLocaleTimeString(),
-    image:
-      'https://material-ui.com/static/images/cards/contemplative-reptile.jpg',
-    content:
-      'Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica'
+    title: '',
+    author: '',
+    date: '',
+    image: '',
+    content: ''
   };
+
+  componentDidMount() {
+    const postId = this.props.match.params.postId;
+    fetch('http://localhost:8080/feed/post/' + postId)
+      .then(res => {
+        if (res.status !== 200) {
+          throw new Error('Unable to fetch this post.');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+        const dateObj = new Date(resData.post.createdAt);
+        const formattedDate =
+          new Intl.DateTimeFormat('en-US', { month: 'long' }).format(dateObj) +
+          ' ' +
+          dateObj.getDate() +
+          ', ' +
+          dateObj.getFullYear() +
+          ' at ' +
+          dateObj.toLocaleTimeString();
+        this.setState({
+          title: resData.post.title,
+          author: resData.post.creator.name,
+          date: formattedDate,
+          image: resData.post.imageUrl,
+          content: resData.post.content
+        });
+      })
+      .catch(err => this.props.catchError(err));
+  }
 
   render() {
     return (
@@ -34,7 +54,7 @@ class SinglePost extends Component {
         </Typography>
         <Divider />
         <div className='single-post__image'>
-          <CardMedia component='img' image={this.state.image} alt='' />
+          {this.state.image && <CardMedia component='img' image={this.state.image} alt='' />}
         </div>
         <Typography variant='h4' gutterBottom>
           {this.state.title}
