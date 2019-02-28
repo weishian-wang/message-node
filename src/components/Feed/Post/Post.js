@@ -56,7 +56,7 @@ const Post = props => {
         <Button size='small' color='primary'>
           Edit
         </Button>
-        <Button size='small' color='secondary'>
+        <Button size='small' color='secondary' onClick={props.onDelete}>
           Delete
         </Button>
       </CardActions>

@@ -124,7 +124,6 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
         const post = {
           _id: resData.post._id,
           title: resData.post.title,
@@ -169,6 +168,28 @@ class Feed extends Component {
       });
   };
 
+  deletePostHandler = postId => {
+    this.setState({ postsLoading: true });
+    fetch('URL')
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Unable to delete this post.');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+        this.setState(prevState => {
+          const updatedPosts = prevState.posts.filter(p => p._id !== postId);
+          return { posts: updatedPosts, postsLoading: false };
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ postsLoading: false });
+      });
+  };
+
   errorHandler = () => {
     this.setState({ error: null });
   };
@@ -208,8 +229,9 @@ class Feed extends Component {
               author={post.creator.name}
               date={new Date(post.createdAt).toLocaleDateString('en-US')}
               title={post.title}
-              image={post.imageUrl}
+              image={'http://localhost:8080/' + post.imageUrl}
               content={post.content}
+              onDelete={this.deletePostHandler.bind(this, post._id)}
             />
           ))}
         </section>

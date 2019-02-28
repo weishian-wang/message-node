@@ -24,7 +24,6 @@ class SinglePost extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
         const dateObj = new Date(resData.post.createdAt);
         const formattedDate =
           new Intl.DateTimeFormat('en-US', { month: 'long' }).format(dateObj) +
@@ -36,13 +35,13 @@ class SinglePost extends Component {
           dateObj.toLocaleTimeString();
         this.setState({
           title: resData.post.title,
-          author: resData.post.creator.name,
+          author: resData.post.creator,
           date: formattedDate,
-          image: resData.post.imageUrl,
+          image: 'http://localhost:8080/' + resData.post.imageUrl,
           content: resData.post.content
         });
       })
-      .catch(err => this.props.catchError(err));
+      .catch(this.props.catchError);
   }
 
   render() {
