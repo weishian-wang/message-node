@@ -16,7 +16,7 @@ class SinglePost extends Component {
 
   componentDidMount() {
     const postId = this.props.match.params.postId;
-    fetch('http://localhost:8080/feed/post/' + postId)
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/post/${postId}`)
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Unable to fetch this post.');
@@ -37,7 +37,7 @@ class SinglePost extends Component {
           title: resData.post.title,
           author: resData.post.creator,
           date: formattedDate,
-          image: 'http://localhost:8080/' + resData.post.imageUrl,
+          image: `${process.env.REACT_APP_DOMAIN}${resData.post.imageUrl}`,
           content: resData.post.content
         });
       })

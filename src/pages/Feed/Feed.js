@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 
 import StatusForm from '../../components/StatusForm/StatusForm';
 import Post from '../../components/Feed/Post/Post';
@@ -48,7 +50,7 @@ class Feed extends Component {
     //   this.setState({ postPage: page });
     // }
 
-    fetch('http://localhost:8080/feed/posts')
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/posts`)
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Unable to fetch posts.');
@@ -101,7 +103,7 @@ class Feed extends Component {
       editLoading: true
     });
 
-    let url = 'http://localhost:8080/feed/post';
+    let url = `${process.env.REACT_APP_DOMAIN}feed/post`;
     let method = 'POST';
     if (this.state.editPost) {
       url = 'URL';
@@ -212,15 +214,18 @@ class Feed extends Component {
           onStatusChange={this.statusInputChangeHandler}
           onStatusSubmit={this.statusUpdateHandler}
         />
-        <section className='feed-control'>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={this.newPostHandler}
-          >
-            New Post
-          </Button>
-        </section>
+        <Grid container justify='center' className='feed-control'>
+          <Grid item>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={this.newPostHandler}
+            >
+              <AddIcon />
+              New Post
+            </Button>
+          </Grid>
+        </Grid>
         <section className='feed'>
           {this.state.posts.map(post => (
             <Post
@@ -229,7 +234,7 @@ class Feed extends Component {
               author={post.creator.name}
               date={new Date(post.createdAt).toLocaleDateString('en-US')}
               title={post.title}
-              image={'http://localhost:8080/' + post.imageUrl}
+              image={`${process.env.REACT_APP_DOMAIN}${post.imageUrl}`}
               content={post.content}
               onDelete={this.deletePostHandler.bind(this, post._id)}
             />
