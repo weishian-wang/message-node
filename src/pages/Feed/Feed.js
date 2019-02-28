@@ -99,10 +99,12 @@ class Feed extends Component {
   finishEditHandler = postData => {
     console.log('Your post data has been received!');
     console.log(postData);
-    this.setState({
-      editLoading: true
-    });
+    this.setState({ editLoading: true });
 
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('content', postData.content);
+    formData.append('image', postData.image);
     let url = `${process.env.REACT_APP_DOMAIN}feed/post`;
     let method = 'POST';
     if (this.state.editPost) {
@@ -112,12 +114,7 @@ class Feed extends Component {
 
     fetch(url, {
       method: method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title: postData.title,
-        image: postData.image,
-        content: postData.content
-      })
+      body: formData
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {

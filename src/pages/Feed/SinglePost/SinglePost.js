@@ -35,7 +35,7 @@ class SinglePost extends Component {
           dateObj.toLocaleTimeString();
         this.setState({
           title: resData.post.title,
-          author: resData.post.creator,
+          author: resData.post.creator.name,
           date: formattedDate,
           image: `${process.env.REACT_APP_DOMAIN}${resData.post.imageUrl}`,
           content: resData.post.content

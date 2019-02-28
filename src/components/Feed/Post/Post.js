@@ -39,7 +39,7 @@ const Post = props => {
       <CardHeader
         avatar={
           <Avatar aria-label='Post' className={classes.avatar}>
-            P
+            {props.author[0]}
           </Avatar>
         }
         title={props.title}
