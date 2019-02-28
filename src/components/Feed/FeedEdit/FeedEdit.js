@@ -9,6 +9,8 @@ class FeedEdit extends Component {
     return this.props.editing ? (
       <Fragment>
         <NewPostHandler
+          editing={this.props.editing}
+          selectedPost={this.props.selectedPost}
           onCancelEdit={this.props.onCancelEdit}
           onFinishEdit={this.props.onFinishEdit}
         />

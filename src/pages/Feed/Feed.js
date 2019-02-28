@@ -59,7 +59,12 @@ class Feed extends Component {
       })
       .then(resData => {
         this.setState({
-          posts: resData.posts,
+          posts: resData.posts.map(post => {
+            return {
+              ...post,
+              imagePath: post.imageUrl
+            };
+          }),
           totalPosts: resData.totalItems,
           postsLoading: false
         });
@@ -96,20 +101,30 @@ class Feed extends Component {
     this.setState({ isEditing: false, editPost: null });
   };
 
+  startEditPostHandler = postId => {
+    this.setState(prevState => {
+      const loadedPost = { ...prevState.posts.find(p => p._id === postId) };
+
+      return {
+        isEditing: true,
+        editPost: loadedPost
+      };
+    });
+  };
+
   finishEditHandler = postData => {
-    console.log('Your post data has been received!');
-    console.log(postData);
     this.setState({ editLoading: true });
 
     const formData = new FormData();
     formData.append('title', postData.title);
     formData.append('content', postData.content);
     formData.append('image', postData.image);
+
     let url = `${process.env.REACT_APP_DOMAIN}feed/post`;
     let method = 'POST';
     if (this.state.editPost) {
-      url = 'URL';
-      method = 'PATCH';
+      url = `${process.env.REACT_APP_DOMAIN}feed/post/${this.state.editPost._id}`;
+      method = 'PUT';
     }
 
     fetch(url, {
@@ -203,6 +218,7 @@ class Feed extends Component {
         <ErrorHandler error={this.state.error} onHandle={this.errorHandler} />
         <FeedEdit
           editing={this.state.isEditing}
+          selectedPost={this.state.editPost}
           onCancelEdit={this.cancelEditHandler}
           onFinishEdit={this.finishEditHandler}
         />
@@ -234,6 +250,7 @@ class Feed extends Component {
               image={`${process.env.REACT_APP_DOMAIN}${post.imageUrl}`}
               content={post.content}
               onDelete={this.deletePostHandler.bind(this, post._id)}
+              onStartEdit={this.startEditPostHandler.bind(this, post._id)}
             />
           ))}
         </section>

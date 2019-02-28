@@ -53,7 +53,7 @@ const Post = props => {
         <Button size='small' color='primary'>
           <Link to={props.id}>See More</Link>
         </Button>
-        <Button size='small' color='primary'>
+        <Button size='small' color='primary' onClick={props.onStartEdit}>
           Edit
         </Button>
         <Button size='small' color='secondary' onClick={props.onDelete}>

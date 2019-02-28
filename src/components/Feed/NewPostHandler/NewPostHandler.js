@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import Divider from '@material-ui/core/Divider';
@@ -24,9 +23,6 @@ const formConfig = {
       message: 'Title must at least be 2 characters long',
       length: 2
     }
-  },
-  image: {
-    isRequired: 'Image is required'
   },
   content: {
     isRequired: 'Content is required',
@@ -49,6 +45,17 @@ const initialState = {
 
 class FormDialog extends Component {
   state = initialState;
+
+  componentDidMount() {
+    if (this.props.editing && this.props.selectedPost) {
+      const postForm = {
+        title: this.props.selectedPost.title,
+        image: this.props.selectedPost.imagePath,
+        content: this.props.selectedPost.content
+      };
+      this.setState({ postForm: postForm });
+    }
+  }
 
   onClickOpenHandler = () => {
     this.setState({ open: true });
@@ -97,7 +104,7 @@ class FormDialog extends Component {
         content: this.state.postForm.content
       };
       this.props.onFinishEdit(post);
-      this.onCloseHandler();
+      this.setState(initialState);
     } else {
       console.log('Invalid');
     }
@@ -116,14 +123,20 @@ class FormDialog extends Component {
         >
           <DialogTitle id='form-dialog-title'>New Post</DialogTitle>
           <Divider />
-          <FormValidation config={formConfig} onSubmit={this.onSubmitShare}>
-            {({ errors, submitted }) => (
+          <FormValidation
+            initialValues={{
+              title: this.state.postForm.title,
+              content: this.state.postForm.content
+            }}
+            config={formConfig}
+            onSubmit={this.onSubmitShare}
+          >
+            {({ fields, errors, submitted }) => (
               <Fragment>
                 <DialogContent>
-                  <DialogContentText />
                   <TextField
                     autoFocus
-                    error={submitted && !!errors.title}
+                    value={this.state.postForm.title}
                     margin='normal'
                     id='title'
                     name='title'
@@ -132,6 +145,7 @@ class FormDialog extends Component {
                     variant='outlined'
                     fullWidth
                     onChange={this.onTitleChange}
+                    error={submitted && !!errors.title}
                   />
                   {submitted && errors.title && (
                     <p className='error'>{errors.title}</p>
@@ -156,7 +170,7 @@ class FormDialog extends Component {
                     )}
                   </div>
                   <TextField
-                    error={submitted && !!errors.content}
+                    value={this.state.postForm.content}
                     margin='normal'
                     id='content'
                     name='content'
@@ -167,6 +181,7 @@ class FormDialog extends Component {
                     multiline
                     rows='4'
                     onChange={this.onContentChange}
+                    error={submitted && !!errors.content}
                   />
                   {submitted && errors.content && (
                     <p className='error'>{errors.content}</p>
