@@ -123,7 +123,9 @@ class Feed extends Component {
     let url = `${process.env.REACT_APP_DOMAIN}feed/post`;
     let method = 'POST';
     if (this.state.editPost) {
-      url = `${process.env.REACT_APP_DOMAIN}feed/post/${this.state.editPost._id}`;
+      url = `${process.env.REACT_APP_DOMAIN}feed/post/${
+        this.state.editPost._id
+      }`;
       method = 'PUT';
     }
 
@@ -184,7 +186,9 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
-    fetch('URL')
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/post/${postId}`, {
+      method: 'DELETE'
+    })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Unable to delete this post.');
