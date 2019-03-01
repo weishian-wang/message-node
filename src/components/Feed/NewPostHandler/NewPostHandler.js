@@ -37,21 +37,18 @@ class FormDialog extends Component {
   state = {
     open: true,
     imagePreview: null,
-    postForm: {
-      title: '',
-      image: '',
-      content: ''
-    }
+    title: '',
+    image: '',
+    content: ''
   };
 
   componentDidMount() {
     if (this.props.editing && this.props.selectedPost) {
-      const postForm = {
+      this.setState({
         title: this.props.selectedPost.title,
         image: this.props.selectedPost.imagePath,
         content: this.props.selectedPost.content
-      };
-      this.setState({ postForm: postForm });
+      });
     }
   }
 
@@ -64,9 +61,7 @@ class FormDialog extends Component {
   };
 
   onTitleChange = e => {
-    this.setState(
-      Object.assign(this.state.postForm, { title: e.target.value })
-    );
+    this.setState({ title: e.target.value });
   };
 
   onImageChange = files => {
@@ -74,10 +69,7 @@ class FormDialog extends Component {
       if (files[0].type === 'image/png' || files[0].type === 'image/jpeg') {
         generateBase64FromImage(files[0])
           .then(b64 => {
-            this.setState({ imagePreview: b64 });
-            this.setState(
-              Object.assign(this.state.postForm, { image: files[0] })
-            );
+            this.setState({ imagePreview: b64, image: files[0] });
           })
           .catch(e => {
             this.setState({ imagePreview: null });
@@ -87,27 +79,23 @@ class FormDialog extends Component {
   };
 
   onContentChange = e => {
-    this.setState(
-      Object.assign(this.state.postForm, { content: e.target.value })
-    );
+    this.setState({ content: e.target.value });
   };
 
   onSubmitShare = ({ errors, fields, isValid }) => {
     if (isValid) {
       const post = {
-        title: this.state.postForm.title,
-        image: this.state.postForm.image,
-        content: this.state.postForm.content
+        title: this.state.title,
+        image: this.state.image,
+        content: this.state.content
       };
+      this.props.onFinishEdit(post);
       this.setState({
         imagePreview: null,
-        postForm: {
-          title: '',
-          image: '',
-          content: ''
-        }
+        title: '',
+        image: '',
+        content: ''
       });
-      this.props.onFinishEdit(post);
     } else {
       console.log('Invalid');
     }
@@ -136,7 +124,7 @@ class FormDialog extends Component {
                 <DialogContent>
                   <TextField
                     autoFocus
-                    value={this.state.postForm.title}
+                    value={this.state.title}
                     margin='normal'
                     id='title'
                     name='title'
@@ -170,7 +158,7 @@ class FormDialog extends Component {
                     )}
                   </div>
                   <TextField
-                    value={this.state.postForm.content}
+                    value={this.state.content}
                     margin='normal'
                     id='content'
                     name='content'

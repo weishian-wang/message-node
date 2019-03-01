@@ -7,6 +7,7 @@ import StatusForm from '../../components/StatusForm/StatusForm';
 import Post from '../../components/Feed/Post/Post';
 import FeedEdit from '../../components/Feed/FeedEdit/FeedEdit';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
+import Paginations from '../../components/Paginations/Paginations';
 import './Feed.css';
 
 class Feed extends Component {
@@ -17,7 +18,11 @@ class Feed extends Component {
     editPost: null,
     postsLoading: false,
     editLoading: false,
-    error: null
+    error: null,
+    totalPosts: 0,
+    currentPage: 1,
+    pages: [],
+    postPerPage: 1
   };
 
   componentDidMount() {
@@ -37,20 +42,26 @@ class Feed extends Component {
   }
 
   loadPosts = direction => {
-    // if (direction) {
-    //   this.setState({ postsLoading: true, posts: [] });
-    // }
-    // let page = this.state.postPage;
-    // if (direction === 'next') {
-    //   page++;
-    //   this.setState({ postPage: page });
-    // }
-    // if (direction === 'previous') {
-    //   page--;
-    //   this.setState({ postPage: page });
-    // }
+    this.setState({ postsLoading: true });
 
-    fetch(`${process.env.REACT_APP_DOMAIN}feed/posts`)
+    let page = this.state.currentPage;
+    if (direction) {
+      const lastPage = Math.ceil(
+        this.state.totalPosts / this.state.postPerPage
+      );
+      if (direction === 'next') {
+        page++;
+        if (page > lastPage) return;
+        this.setState({ currentPage: page });
+      }
+      if (direction === 'previous') {
+        page--;
+        if (page <= 0) return;
+        this.setState({ currentPage: page });
+      }
+    }
+
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/posts?page=${page}`)
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Unable to fetch posts.');
@@ -58,18 +69,58 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        this.setState({
-          posts: resData.posts.map(post => {
-            return {
-              ...post,
-              imagePath: post.imageUrl
-            };
-          }),
-          totalPosts: resData.totalItems,
-          postsLoading: false
-        });
+        this.setState(
+          {
+            posts: resData.posts.map(post => {
+              return {
+                ...post,
+                imagePath: post.imageUrl
+              };
+            }),
+            totalPosts: resData.totalItems,
+            postPerPage: resData.POST_PER_PAGE,
+            postsLoading: false
+          },
+          () =>
+            this.calculatePaginations(
+              this.state.totalPosts,
+              this.state.currentPage,
+              this.state.postPerPage
+            )
+        );
       })
       .catch(this.catchError);
+  };
+
+  calculatePaginations = (totalPosts, currentPage, postPerPage) => {
+    const pages = [];
+    const lastPage = Math.ceil(totalPosts / postPerPage);
+    for (let i = 0; i < lastPage + 2; i++) {
+      if (i === 0) {
+        pages.push({
+          text: 'PREV',
+          onClick: this.loadPosts.bind(this, 'previous')
+        });
+        continue;
+      }
+      if (i === lastPage + 1) {
+        pages.push({
+          text: 'NEXT',
+          onClick: this.loadPosts.bind(this, 'next')
+        });
+        continue;
+      }
+      pages.push({
+        text: i,
+        active: i === currentPage,
+        onClick: this.changePage.bind(this, i)
+      });
+    }
+    this.setState({ pages: pages });
+  };
+
+  changePage = page => {
+    this.setState({ currentPage: page }, () => this.loadPosts());
   };
 
   statusInputChangeHandler = event => {
@@ -186,6 +237,7 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
+
     fetch(`${process.env.REACT_APP_DOMAIN}feed/post/${postId}`, {
       method: 'DELETE'
     })
@@ -258,6 +310,11 @@ class Feed extends Component {
             />
           ))}
         </section>
+        <Grid container justify='center'>
+          <Grid item>
+            <Paginations pages={this.state.pages} color='info' />
+          </Grid>
+        </Grid>
       </Fragment>
     );
   }
