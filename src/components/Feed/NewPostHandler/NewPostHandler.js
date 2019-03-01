@@ -33,18 +33,16 @@ const formConfig = {
   }
 };
 
-const initialState = {
-  open: true,
-  imagePreview: null,
-  postForm: {
-    title: '',
-    image: '',
-    content: ''
-  }
-};
-
 class FormDialog extends Component {
-  state = initialState;
+  state = {
+    open: true,
+    imagePreview: null,
+    postForm: {
+      title: '',
+      image: '',
+      content: ''
+    }
+  };
 
   componentDidMount() {
     if (this.props.editing && this.props.selectedPost) {
@@ -62,7 +60,6 @@ class FormDialog extends Component {
   };
 
   onCloseHandler = () => {
-    this.setState(initialState);
     this.props.onCancelEdit();
   };
 
@@ -97,14 +94,20 @@ class FormDialog extends Component {
 
   onSubmitShare = ({ errors, fields, isValid }) => {
     if (isValid) {
-      console.log('Valid');
       const post = {
         title: this.state.postForm.title,
         image: this.state.postForm.image,
         content: this.state.postForm.content
       };
+      this.setState({
+        imagePreview: null,
+        postForm: {
+          title: '',
+          image: '',
+          content: ''
+        }
+      });
       this.props.onFinishEdit(post);
-      this.setState(initialState);
     } else {
       console.log('Invalid');
     }
@@ -124,10 +127,7 @@ class FormDialog extends Component {
           <DialogTitle id='form-dialog-title'>New Post</DialogTitle>
           <Divider />
           <FormValidation
-            initialValues={{
-              title: this.state.postForm.title,
-              content: this.state.postForm.content
-            }}
+            initialValues={{ title: '', content: '' }}
             config={formConfig}
             onSubmit={this.onSubmitShare}
           >
