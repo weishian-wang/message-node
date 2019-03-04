@@ -12,7 +12,7 @@ import './App.css';
 
 class App extends Component {
   state = {
-    isAuth: true,
+    isAuth: false,
     token: null,
     userId: null,
     authLoading: false,
@@ -33,12 +33,40 @@ class App extends Component {
   };
 
   signupHandler = (name, email, password) => {
-    this.setState({ isAuth: false });
-    console.log('name:', name);
-    console.log('email:', email);
-    console.log('password:', password);
-    console.log('You have signed up successfully!');
-    this.props.history.replace('/');
+    this.setState({ authLoading: true });
+    fetch(`${process.env.REACT_APP_DOMAIN}auth/signup`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password
+      })
+    })
+      .then(res => {
+        if (res.status === 422) {
+          throw new Error('Email address has been used.');
+        }
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Unable to sign up.');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+        this.setState({ isAuth: false, authLoading: false });
+        this.props.history.replace('/');
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          isAuth: false,
+          authLoading: false,
+          error: err
+        });
+      });
   };
 
   errorHandler = () => {
@@ -71,6 +99,7 @@ class App extends Component {
               {...props}
               onSignup={this.signupHandler}
               loading={this.state.authLoading}
+              catchError={this.catchError}
             />
           )}
         />
@@ -89,6 +118,7 @@ class App extends Component {
                 {...props}
                 userId={this.state.userId}
                 token={this.state.token}
+                catchError={this.catchError}
               />
             )}
           />

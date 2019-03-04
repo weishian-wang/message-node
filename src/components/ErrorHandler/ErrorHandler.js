@@ -22,7 +22,7 @@ const ErrorHandler = props => {
           aria-labelledby='responsive-dialog-title'
         >
           <DialogTitle id='responsive-dialog-title'>
-            {'An Error Occurred'}
+            {'Error'}
           </DialogTitle>
           <DialogContent>
             <DialogContentText>{error.message}</DialogContentText>

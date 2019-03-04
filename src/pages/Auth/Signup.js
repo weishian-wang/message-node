@@ -16,11 +16,7 @@ import './Auth.css';
 
 const formConfig = {
   name: {
-    isRequired: 'Your name is required',
-    isMinLength: {
-      message: 'Your name must at least be 2 characters long',
-      length: 2
-    }
+    isRequired: 'Your name is required'
   },
   email: {
     isRequired: 'Email address is required',
@@ -88,12 +84,13 @@ class Signup extends Component {
   };
 
   onSubmitSignup = ({ errors, fields, isValid }) => {
-    const { name, email, password } = this.state;
     if (isValid) {
-      console.log('Valid');
+      const { name, email, password } = this.state;
       this.props.onSignup(name, email, password);
     } else {
-      console.log('Invalid');
+      this.props.catchError(
+        new Error('Please check your information and try again.')
+      );
     }
   };
 

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { FormValidation } from 'calidation';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,9 +8,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import Divider from '@material-ui/core/Divider';
-import { generateBase64FromImage } from '../../../util/image';
-import { FormValidation } from 'calidation';
 
+import { generateBase64FromImage } from '../../../util/image';
 import './NewPostHandler.css';
 
 const Transition = props => {
@@ -43,18 +43,14 @@ class FormDialog extends Component {
   };
 
   componentDidMount() {
-    if (this.props.editing && this.props.selectedPost) {
+    if (this.props.selectedPost) {
       this.setState({
         title: this.props.selectedPost.title,
-        image: this.props.selectedPost.imagePath,
+        image: this.props.selectedPost.imageUrl,
         content: this.props.selectedPost.content
       });
     }
   }
-
-  onClickOpenHandler = () => {
-    this.setState({ open: true });
-  };
 
   onCloseHandler = () => {
     this.props.onCancelEdit();
@@ -115,7 +111,10 @@ class FormDialog extends Component {
           <DialogTitle id='form-dialog-title'>New Post</DialogTitle>
           <Divider />
           <FormValidation
-            initialValues={{ title: '', content: '' }}
+            initialValues={{
+              title: this.state.title,
+              content: this.state.content
+            }}
             config={formConfig}
             onSubmit={this.onSubmitShare}
           >

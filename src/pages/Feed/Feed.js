@@ -6,7 +6,7 @@ import AddIcon from '@material-ui/icons/Add';
 import StatusForm from '../../components/StatusForm/StatusForm';
 import Post from '../../components/Feed/Post/Post';
 import FeedEdit from '../../components/Feed/FeedEdit/FeedEdit';
-import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
+// import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
 import Paginations from '../../components/Paginations/Paginations';
 import './Feed.css';
 
@@ -36,7 +36,7 @@ class Feed extends Component {
       .then(resData => {
         this.setState({ status: resData.status });
       })
-      .catch(this.catchError);
+      .catch(this.props.catchError);
 
     this.loadPosts();
   }
@@ -71,12 +71,7 @@ class Feed extends Component {
       .then(resData => {
         this.setState(
           {
-            posts: resData.posts.map(post => {
-              return {
-                ...post,
-                imagePath: post.imageUrl
-              };
-            }),
+            posts: resData.posts,
             totalPosts: resData.totalItems,
             postPerPage: resData.POST_PER_PAGE,
             postsLoading: false
@@ -89,7 +84,7 @@ class Feed extends Component {
             )
         );
       })
-      .catch(this.catchError);
+      .catch(this.props.catchError);
   };
 
   calculatePaginations = (totalPosts, currentPage, postPerPage) => {
@@ -141,7 +136,7 @@ class Feed extends Component {
     //   .then(resData => {
     //     console.log(resData);
     //   })
-    //   .catch(this.catchError);
+    //   .catch(this.props.catchError);
   };
 
   newPostHandler = () => {
@@ -210,7 +205,7 @@ class Feed extends Component {
             updatedPosts[postIndex] = post;
           } else {
             updatedTotalPosts++;
-            if (prevState.posts.length >= 2) {
+            if (prevState.posts.length >= this.state.postPerPage) {
               updatedPosts.pop();
             }
             updatedPosts.unshift(post);
@@ -248,7 +243,6 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
         this.setState(prevState => {
           const updatedPosts = prevState.posts.filter(p => p._id !== postId);
           return { posts: updatedPosts, postsLoading: false };
@@ -260,18 +254,18 @@ class Feed extends Component {
       });
   };
 
-  errorHandler = () => {
-    this.setState({ error: null });
-  };
+  // errorHandler = () => {
+  //   this.setState({ error: null });
+  // };
 
-  catchError = error => {
-    this.setState({ error: error });
-  };
+  // catchError = error => {
+  //   this.setState({ error: error });
+  // };
 
   render() {
     return (
       <Fragment>
-        <ErrorHandler error={this.state.error} onHandle={this.errorHandler} />
+        {/* <ErrorHandler error={this.state.error} onHandle={this.errorHandler} /> */}
         <FeedEdit
           editing={this.state.isEditing}
           selectedPost={this.state.editPost}
