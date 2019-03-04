@@ -19,17 +19,72 @@ class App extends Component {
     error: null
   };
 
+  componentDidMount() {
+    const token = localStorage.getItem('token');
+    const expiryDate = localStorage.getItem('expiryDate');
+    if (!token || !expiryDate) {
+      return;
+    }
+    if (new Date(expiryDate) <= new Date()) {
+      this.signoutHandler();
+      return;
+    }
+    const userId = localStorage.getItem('userId');
+    this.setState({ isAuth: true, token: token, userId: userId });
+  }
+
   signoutHandler = () => {
     this.setState({ isAuth: false, token: null });
-    this.setState({ authLoading: false });
+    localStorage.removeItem('token');
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem('userId');
   };
 
   signinHandler = (email, password) => {
     this.setState({ authLoading: true });
-    console.log('email:', email);
-    console.log('password:', password);
-    console.log('You have signed in!');
-    this.setState({ isAuth: true });
+    fetch(`${process.env.REACT_APP_DOMAIN}auth/signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+      .then(res => {
+        if (res.status === 422) {
+          throw new Error('Validation failed.');
+        }
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Could not authenticate you!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+        this.setState({
+          isAuth: true,
+          token: resData.token,
+          userId: resData.userId,
+          authLoading: false
+        });
+        localStorage.setItem('token', resData.token);
+        localStorage.setItem('userId', resData.userId);
+        const remainingMilliseconds = 1000 * 60 * 60;
+        const expiryDate = new Date(
+          new Date().getTime() + remainingMilliseconds
+        );
+        localStorage.setItem('expiryDate', expiryDate.toISOString());
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          isAuth: false,
+          authLoading: false,
+          error: err
+        });
+      });
   };
 
   signupHandler = (name, email, password) => {
