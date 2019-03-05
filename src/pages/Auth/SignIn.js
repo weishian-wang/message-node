@@ -80,7 +80,6 @@ class Signin extends Component {
   onSubmitSignin = ({ errors, fields, isValid }) => {
     const { email, password } = this.state;
     if (isValid) {
-      console.log('Valid');
       this.props.onSignin(email, password);
     } else {
       console.log('Invalid');

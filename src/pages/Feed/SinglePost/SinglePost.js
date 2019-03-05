@@ -16,7 +16,11 @@ class SinglePost extends Component {
 
   componentDidMount() {
     const postId = this.props.match.params.postId;
-    fetch(`${process.env.REACT_APP_DOMAIN}feed/post/${postId}`)
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/post/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${this.props.token}`
+      }
+    })
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Unable to fetch this post.');
@@ -53,7 +57,9 @@ class SinglePost extends Component {
         </Typography>
         <Divider />
         <div className='single-post__image'>
-          {this.state.image && <CardMedia component='img' image={this.state.image} alt='' />}
+          {this.state.image && (
+            <CardMedia component='img' image={this.state.image} alt='' />
+          )}
         </div>
         <Typography variant='h4' gutterBottom>
           {this.state.title}

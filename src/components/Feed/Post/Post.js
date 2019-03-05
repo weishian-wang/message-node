@@ -29,11 +29,11 @@ const styles = theme => ({
   actions: {
     display: 'flex',
     justifyContent: 'flex-end'
-  },
+  }
 });
 
 const Post = props => {
-  const { classes } = props;
+  const { classes, isAuthor } = props;
   return (
     <Card className={classes.card}>
       <CardHeader
@@ -53,12 +53,16 @@ const Post = props => {
         <Button size='small' color='primary'>
           <Link to={props.id}>See More</Link>
         </Button>
-        <Button size='small' color='primary' onClick={props.onStartEdit}>
-          Edit
-        </Button>
-        <Button size='small' color='secondary' onClick={props.onDelete}>
-          Delete
-        </Button>
+        {isAuthor ? (
+          <Button size='small' color='primary' onClick={props.onStartEdit}>
+            Edit
+          </Button>
+        ) : null}
+        {isAuthor ? (
+          <Button size='small' color='secondary' onClick={props.onDelete}>
+            Delete
+          </Button>
+        ) : null}
       </CardActions>
     </Card>
   );

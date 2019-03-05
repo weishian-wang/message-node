@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+import Typography from '@material-ui/core/Typography';
 
 import StatusForm from '../../components/StatusForm/StatusForm';
 import Post from '../../components/Feed/Post/Post';
 import FeedEdit from '../../components/Feed/FeedEdit/FeedEdit';
-// import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
+import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
 import Paginations from '../../components/Paginations/Paginations';
 import './Feed.css';
 
@@ -36,7 +37,7 @@ class Feed extends Component {
       .then(resData => {
         this.setState({ status: resData.status });
       })
-      .catch(this.props.catchError);
+      .catch(this.catchError);
 
     this.loadPosts();
   }
@@ -61,7 +62,11 @@ class Feed extends Component {
       }
     }
 
-    fetch(`${process.env.REACT_APP_DOMAIN}feed/posts?page=${page}`)
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/posts?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${this.props.token}`
+      }
+    })
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Unable to fetch posts.');
@@ -84,32 +89,34 @@ class Feed extends Component {
             )
         );
       })
-      .catch(this.props.catchError);
+      .catch(this.catchError);
   };
 
   calculatePaginations = (totalPosts, currentPage, postPerPage) => {
     const pages = [];
-    const lastPage = Math.ceil(totalPosts / postPerPage);
-    for (let i = 0; i < lastPage + 2; i++) {
-      if (i === 0) {
+    if (totalPosts > 0) {
+      const lastPage = Math.ceil(totalPosts / postPerPage);
+      for (let i = 0; i < lastPage + 2; i++) {
+        if (i === 0) {
+          pages.push({
+            text: 'PREV',
+            onClick: this.loadPosts.bind(this, 'previous')
+          });
+          continue;
+        }
+        if (i === lastPage + 1) {
+          pages.push({
+            text: 'NEXT',
+            onClick: this.loadPosts.bind(this, 'next')
+          });
+          continue;
+        }
         pages.push({
-          text: 'PREV',
-          onClick: this.loadPosts.bind(this, 'previous')
+          text: i,
+          active: i === currentPage,
+          onClick: this.changePage.bind(this, i)
         });
-        continue;
       }
-      if (i === lastPage + 1) {
-        pages.push({
-          text: 'NEXT',
-          onClick: this.loadPosts.bind(this, 'next')
-        });
-        continue;
-      }
-      pages.push({
-        text: i,
-        active: i === currentPage,
-        onClick: this.changePage.bind(this, i)
-      });
     }
     this.setState({ pages: pages });
   };
@@ -136,7 +143,7 @@ class Feed extends Component {
     //   .then(resData => {
     //     console.log(resData);
     //   })
-    //   .catch(this.props.catchError);
+    //   .catch(this.catchError);
   };
 
   newPostHandler = () => {
@@ -177,6 +184,9 @@ class Feed extends Component {
 
     fetch(url, {
       method: method,
+      headers: {
+        Authorization: `Bearer ${this.props.token}`
+      },
       body: formData
     })
       .then(res => {
@@ -191,10 +201,9 @@ class Feed extends Component {
           title: resData.post.title,
           imageUrl: resData.post.imageUrl,
           content: resData.post.content,
-          creator: resData.post.creator,
+          creator: resData.creator,
           createdAt: resData.post.createdAt
         };
-
         this.setState(prevState => {
           let updatedPosts = [...prevState.posts];
           let updatedTotalPosts = prevState.totalPosts;
@@ -234,7 +243,10 @@ class Feed extends Component {
     this.setState({ postsLoading: true });
 
     fetch(`${process.env.REACT_APP_DOMAIN}feed/post/${postId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${this.props.token}`
+      }
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
@@ -254,18 +266,19 @@ class Feed extends Component {
       });
   };
 
-  // errorHandler = () => {
-  //   this.setState({ error: null });
-  // };
+  errorHandler = () => {
+    this.setState({ error: null });
+  };
 
-  // catchError = error => {
-  //   this.setState({ error: error });
-  // };
+  catchError = error => {
+    this.setState({ error: error });
+  };
 
   render() {
+    const posts = this.state.posts;
     return (
       <Fragment>
-        {/* <ErrorHandler error={this.state.error} onHandle={this.errorHandler} /> */}
+        <ErrorHandler error={this.state.error} onHandle={this.errorHandler} />
         <FeedEdit
           editing={this.state.isEditing}
           selectedPost={this.state.editPost}
@@ -290,11 +303,12 @@ class Feed extends Component {
           </Grid>
         </Grid>
         <section className='feed'>
-          {this.state.posts.map(post => (
+          {posts.map(post => (
             <Post
               key={post._id}
               id={post._id}
               author={post.creator.name}
+              isAuthor={post.creator._id === this.props.userId}
               date={new Date(post.createdAt).toLocaleDateString('en-US')}
               title={post.title}
               image={`${process.env.REACT_APP_DOMAIN}${post.imageUrl}`}
@@ -306,7 +320,11 @@ class Feed extends Component {
         </section>
         <Grid container justify='center'>
           <Grid item>
-            <Paginations pages={this.state.pages} color='info' />
+            {posts.length > 0 ? (
+              <Paginations pages={this.state.pages} color='info' />
+            ) : (
+              <Typography variant='h5'>No posts found</Typography>
+            )}
           </Grid>
         </Grid>
       </Fragment>
