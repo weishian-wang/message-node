@@ -27,7 +27,12 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    fetch('URL')
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/status`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${this.props.token}`
+      }
+    })
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Unable to fetch user status.');
@@ -125,7 +130,7 @@ class Feed extends Component {
     this.setState({ currentPage: page }, () => this.loadPosts());
   };
 
-  statusInputChangeHandler = event => {
+  statusChangeHandler = event => {
     console.log(event.target.value);
     this.setState({ status: event.target.value });
   };
@@ -287,7 +292,7 @@ class Feed extends Component {
         />
         <StatusForm
           status={this.state.status}
-          onStatusChange={this.statusInputChangeHandler}
+          onStatusChange={this.statusChangeHandler}
           onStatusSubmit={this.statusUpdateHandler}
         />
         <Grid container justify='center' className='feed-control'>
