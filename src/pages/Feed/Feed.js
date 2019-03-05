@@ -9,6 +9,7 @@ import Post from '../../components/Feed/Post/Post';
 import FeedEdit from '../../components/Feed/FeedEdit/FeedEdit';
 import ErrorHandler from '../../components/ErrorHandler/ErrorHandler';
 import Paginations from '../../components/Paginations/Paginations';
+import Loader from '../../components/Loader/Loader';
 import './Feed.css';
 
 class Feed extends Component {
@@ -287,7 +288,7 @@ class Feed extends Component {
   };
 
   render() {
-    const posts = this.state.posts;
+    const { postsLoading, posts } = this.state;
     return (
       <Fragment>
         <ErrorHandler error={this.state.error} onHandle={this.errorHandler} />
@@ -315,27 +316,34 @@ class Feed extends Component {
           </Grid>
         </Grid>
         <section className='feed'>
-          {posts.map(post => (
-            <Post
-              key={post._id}
-              id={post._id}
-              author={post.creator.name}
-              isAuthor={post.creator._id === this.props.userId}
-              date={new Date(post.createdAt).toLocaleDateString('en-US')}
-              title={post.title}
-              image={`${process.env.REACT_APP_DOMAIN}${post.imageUrl}`}
-              content={post.content}
-              onDelete={this.deletePostHandler.bind(this, post._id)}
-              onStartEdit={this.startEditPostHandler.bind(this, post._id)}
-            />
-          ))}
+          <Grid container justify='center'>
+            <Grid item>
+              {postsLoading && <Loader />}
+              {!postsLoading && posts.length <= 0 && (
+                <Typography variant='h5'>No posts found</Typography>
+              )}
+            </Grid>
+          </Grid>
+          {!postsLoading &&
+            posts.map(post => (
+              <Post
+                key={post._id}
+                id={post._id}
+                author={post.creator.name}
+                isAuthor={post.creator._id === this.props.userId}
+                date={new Date(post.createdAt).toLocaleDateString('en-US')}
+                title={post.title}
+                image={`${process.env.REACT_APP_DOMAIN}${post.imageUrl}`}
+                content={post.content}
+                onDelete={this.deletePostHandler.bind(this, post._id)}
+                onStartEdit={this.startEditPostHandler.bind(this, post._id)}
+              />
+            ))}
         </section>
         <Grid container justify='center'>
           <Grid item>
-            {posts.length > 0 ? (
+            {!postsLoading && posts.length >= 1 && (
               <Paginations pages={this.state.pages} color='info' />
-            ) : (
-              <Typography variant='h5'>No posts found</Typography>
             )}
           </Grid>
         </Grid>
