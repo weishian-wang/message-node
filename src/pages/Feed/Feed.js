@@ -131,24 +131,31 @@ class Feed extends Component {
   };
 
   statusChangeHandler = event => {
-    console.log(event.target.value);
     this.setState({ status: event.target.value });
   };
 
   statusUpdateHandler = event => {
-    console.log('You have updated your status!');
     event.preventDefault();
-    // fetch('URL')
-    //   .then(res => {
-    //     if (res.status !== 200 && res.status !== 201) {
-    //       throw new Error('Unable to update status!');
-    //     }
-    //     return res.json();
-    //   })
-    //   .then(resData => {
-    //     console.log(resData);
-    //   })
-    //   .catch(this.catchError);
+    fetch(`${process.env.REACT_APP_DOMAIN}feed/status`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${this.props.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        status: this.state.status
+      })
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error('Unable to update your status.');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+      })
+      .catch(this.catchError);
   };
 
   newPostHandler = () => {
