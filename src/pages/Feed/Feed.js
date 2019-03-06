@@ -99,8 +99,8 @@ class Feed extends Component {
   };
 
   calculatePaginations = (totalPosts, currentPage, postPerPage) => {
-    const pages = [];
-    if (totalPosts > 0) {
+    if (totalPosts >= 1) {
+      const pages = [];
       const lastPage = Math.ceil(totalPosts / postPerPage);
       for (let i = 0; i < lastPage + 2; i++) {
         if (i === 0) {
@@ -123,8 +123,8 @@ class Feed extends Component {
           onClick: this.changePage.bind(this, i)
         });
       }
+      this.setState({ pages: pages });
     }
-    this.setState({ pages: pages });
   };
 
   changePage = page => {

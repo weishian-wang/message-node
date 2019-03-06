@@ -34,7 +34,7 @@ class App extends Component {
   }
 
   signoutHandler = () => {
-    this.setState({ isAuth: false, token: null });
+    this.setState({ isAuth: false, token: null, userId: null });
     localStorage.removeItem('token');
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');

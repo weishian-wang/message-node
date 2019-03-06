@@ -37,6 +37,7 @@ class SinglePost extends Component {
           dateObj.getFullYear() +
           ' at ' +
           dateObj.toLocaleTimeString();
+          
         this.setState({
           title: resData.post.title,
           author: resData.post.creator.name,
