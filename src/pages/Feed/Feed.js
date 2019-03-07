@@ -52,23 +52,37 @@ class Feed extends Component {
     socket.on('posts', data => {
       if (data.action === 'create') {
         this.addPost(data.post);
+      } else if (data.action === 'update') {
+        this.updatePost(data.post);
       }
     });
   }
 
-  addPost = newPost => {
-    console.log(newPost);
+  addPost = post => {
     this.setState(prevState => {
       const updatedPosts = [...prevState.posts];
       if (prevState.currentPage === 1) {
         if (prevState.posts.length >= prevState.postPerPage) {
           updatedPosts.pop();
         }
-        updatedPosts.unshift(newPost);
+        updatedPosts.unshift(post);
       }
       return {
         posts: updatedPosts,
         totalPosts: prevState.totalPosts + 1
+      };
+    });
+  };
+
+  updatePost = post => {
+    this.setState(prevState => {
+      const updatedPosts = [...prevState.posts];
+      const updatedPostIndex = updatedPosts.findIndex(p => p._id === post._id);
+      if (updatedPostIndex > -1) {
+        updatedPosts[updatedPostIndex] = post;
+      }
+      return {
+        posts: updatedPosts
       };
     });
   };
@@ -234,37 +248,10 @@ class Feed extends Component {
         return res.json();
       })
       .then(resData => {
-        const post = {
-          _id: resData.post._id,
-          title: resData.post.title,
-          imageUrl: resData.post.imageUrl,
-          content: resData.post.content,
-          creator: resData.post.creator,
-          createdAt: resData.post.createdAt
-        };
-        this.setState(prevState => {
-          let updatedPosts = [...prevState.posts];
-          // let updatedTotalPosts = prevState.totalPosts;
-          if (prevState.editPost) {
-            const postIndex = prevState.posts.findIndex(p => {
-              return p._id === prevState.editPost._id;
-            });
-            updatedPosts[postIndex] = post;
-          }
-          // else {
-          //   updatedTotalPosts++;
-          //   if (prevState.posts.length >= prevState.postPerPage) {
-          //     updatedPosts.pop();
-          //   }
-          //   updatedPosts.unshift(post);
-          // }
-          return {
-            posts: updatedPosts,
-            // totalPosts: updatedTotalPosts,
-            isEditing: false,
-            editPost: null,
-            editLoading: false
-          };
+        this.setState({
+          isEditing: false,
+          editPost: null,
+          editLoading: false
         });
       })
       .catch(err => {
