@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import openSocket from 'socket.io-client';
+
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
@@ -29,7 +31,6 @@ class Feed extends Component {
 
   componentDidMount() {
     fetch(`${process.env.REACT_APP_DOMAIN}feed/status`, {
-      method: 'GET',
       headers: {
         Authorization: `Bearer ${this.props.token}`
       }
@@ -46,7 +47,31 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
+
+    const socket = openSocket(`${process.env.REACT_APP_DOMAIN}`);
+    socket.on('posts', data => {
+      if (data.action === 'create') {
+        this.addPost(data.post);
+      }
+    });
   }
+
+  addPost = newPost => {
+    console.log(newPost);
+    this.setState(prevState => {
+      const updatedPosts = [...prevState.posts];
+      if (prevState.currentPage === 1) {
+        if (prevState.posts.length >= prevState.postPerPage) {
+          updatedPosts.pop();
+        }
+        updatedPosts.unshift(newPost);
+      }
+      return {
+        posts: updatedPosts,
+        totalPosts: prevState.totalPosts + 1
+      };
+    });
+  };
 
   loadPosts = direction => {
     this.setState({ postsLoading: true });
@@ -214,27 +239,28 @@ class Feed extends Component {
           title: resData.post.title,
           imageUrl: resData.post.imageUrl,
           content: resData.post.content,
-          creator: resData.creator,
+          creator: resData.post.creator,
           createdAt: resData.post.createdAt
         };
         this.setState(prevState => {
           let updatedPosts = [...prevState.posts];
-          let updatedTotalPosts = prevState.totalPosts;
+          // let updatedTotalPosts = prevState.totalPosts;
           if (prevState.editPost) {
             const postIndex = prevState.posts.findIndex(p => {
               return p._id === prevState.editPost._id;
             });
             updatedPosts[postIndex] = post;
-          } else {
-            updatedTotalPosts++;
-            if (prevState.posts.length >= this.state.postPerPage) {
-              updatedPosts.pop();
-            }
-            updatedPosts.unshift(post);
           }
+          // else {
+          //   updatedTotalPosts++;
+          //   if (prevState.posts.length >= prevState.postPerPage) {
+          //     updatedPosts.pop();
+          //   }
+          //   updatedPosts.unshift(post);
+          // }
           return {
             posts: updatedPosts,
-            totalPosts: updatedTotalPosts,
+            // totalPosts: updatedTotalPosts,
             isEditing: false,
             editPost: null,
             editLoading: false
