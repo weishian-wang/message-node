@@ -12,6 +12,7 @@ import './App.css';
 
 class App extends Component {
   state = {
+    appTitle: 'Social Post',
     isAuth: false,
     token: null,
     userId: null,
@@ -202,7 +203,7 @@ class App extends Component {
     return (
       <Fragment>
         <ErrorHandler error={this.state.error} onHandle={this.errorHandler} />
-        <TopAppBar>
+        <TopAppBar appTitle={this.state.appTitle}>
           <NavButtons
             isAuth={this.state.isAuth}
             onSignout={this.signoutHandler}

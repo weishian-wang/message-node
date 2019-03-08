@@ -25,7 +25,7 @@ const TopAppBar = props => {
       <AppBar position='fixed'>
         <Toolbar>
           <Typography variant='h5' color='inherit' className={classes.grow}>
-            Message Node
+            {props.appTitle}
           </Typography>
           <div className={classes.navBtns}>{props.children}</div>
         </Toolbar>
