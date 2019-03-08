@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { FormValidation } from 'calidation';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -124,12 +125,12 @@ class FormDialog extends Component {
                   <TextField
                     autoFocus
                     value={this.state.title}
-                    margin='normal'
                     id='title'
                     name='title'
                     label='Title'
                     type='text'
                     variant='outlined'
+                    margin='normal'
                     fullWidth
                     onChange={this.onTitleChange}
                     error={submitted && !!errors.title}
@@ -158,12 +159,12 @@ class FormDialog extends Component {
                   </div>
                   <TextField
                     value={this.state.content}
-                    margin='normal'
                     id='content'
                     name='content'
                     label='Content'
                     type='text'
                     variant='outlined'
+                    margin='normal'
                     fullWidth
                     multiline
                     rows='4'

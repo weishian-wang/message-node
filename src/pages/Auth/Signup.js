@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import { FormValidation } from 'calidation';
+
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -10,7 +12,6 @@ import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { FormValidation } from 'calidation';
 
 import './Auth.css';
 
@@ -71,16 +72,16 @@ class Signup extends Component {
     password: ''
   };
 
-  onNameChange = event => {
-    this.setState({ name: event.target.value });
+  onNameChange = e => {
+    this.setState({ name: e.target.value });
   };
 
-  onEmailChange = event => {
-    this.setState({ email: event.target.value });
+  onEmailChange = e => {
+    this.setState({ email: e.target.value });
   };
 
-  onPasswordChange = event => {
-    this.setState({ password: event.target.value });
+  onPasswordChange = e => {
+    this.setState({ password: e.target.value });
   };
 
   onSubmitSignup = ({ errors, fields, isValid }) => {

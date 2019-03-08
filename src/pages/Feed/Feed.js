@@ -170,12 +170,12 @@ class Feed extends Component {
     this.setState({ currentPage: page }, () => this.loadPosts());
   };
 
-  statusChangeHandler = event => {
-    this.setState({ status: event.target.value });
+  statusChangeHandler = e => {
+    this.setState({ status: e.target.value });
   };
 
-  statusUpdateHandler = event => {
-    event.preventDefault();
+  statusUpdateHandler = e => {
+    e.preventDefault();
     fetch(`${process.env.REACT_APP_DOMAIN}feed/status`, {
       method: 'PATCH',
       headers: {

@@ -15,6 +15,7 @@ class App extends Component {
     isAuth: false,
     token: null,
     userId: null,
+    userEmail: null,
     authLoading: false,
     error: null
   };
@@ -40,8 +41,9 @@ class App extends Component {
     localStorage.removeItem('userId');
   };
 
-  signinHandler = (email, password) => {
+  signinHandler = (email, password, remember) => {
     this.setState({ authLoading: true });
+
     fetch(`${process.env.REACT_APP_DOMAIN}auth/signin`, {
       method: 'POST',
       headers: {
@@ -66,8 +68,15 @@ class App extends Component {
           isAuth: true,
           token: resData.token,
           userId: resData.userId,
+          userEmail: resData.userEmail,
           authLoading: false
         });
+
+        if (remember) {
+          localStorage.setItem('userEmail', resData.userEmail);
+        } else {
+          localStorage.removeItem('userEmail');
+        }
         localStorage.setItem('token', resData.token);
         localStorage.setItem('userId', resData.userId);
         const remainingMilliseconds = 1000 * 60 * 60;

@@ -65,24 +65,27 @@ const styles = theme => ({
 
 class Signin extends Component {
   state = {
-    email: '',
-    password: ''
+    email: localStorage.getItem('userEmail') || '',
+    password: '',
+    remember: false
   };
 
-  onEmailChange = event => {
-    this.setState({ email: event.target.value });
+  onEmailChange = e => {
+    this.setState({ email: e.target.value });
   };
 
-  onPasswordChange = event => {
-    this.setState({ password: event.target.value });
+  onPasswordChange = e => {
+    this.setState({ password: e.target.value });
+  };
+
+  onCheckboxChange = e => {
+    this.setState({ remember: e.target.checked });
   };
 
   onSubmitSignin = ({ errors, fields, isValid }) => {
-    const { email, password } = this.state;
     if (isValid) {
-      this.props.onSignin(email, password);
-    } else {
-      console.log('Invalid');
+      const { email, password, remember } = this.state;
+      this.props.onSignin(email, password, remember);
     }
   };
 
@@ -100,6 +103,7 @@ class Signin extends Component {
           </Typography>
           <FormValidation
             config={formConfig}
+            initialValues={{ email: this.state.email }}
             onSubmit={this.onSubmitSignin}
             className={classes.form}
           >
@@ -108,10 +112,11 @@ class Signin extends Component {
                 <FormControl margin='normal' required fullWidth>
                   <InputLabel htmlFor='email'>Email Address</InputLabel>
                   <Input
+                    autoFocus
                     id='email'
                     name='email'
                     autoComplete='email'
-                    autoFocus
+                    value={this.state.email}
                     disabled={this.props.loading}
                     onChange={this.onEmailChange}
                   />
@@ -134,7 +139,15 @@ class Signin extends Component {
                   )}
                 </FormControl>
                 <FormControlLabel
-                  control={<Checkbox value='remember' color='primary' />}
+                  control={
+                    <Checkbox
+                      value='remember'
+                      color='primary'
+                      defaultChecked={this.state.remember}
+                      disabled={this.props.loading}
+                      onChange={this.onCheckboxChange}
+                    />
+                  }
                   label='Remember me'
                 />
                 <Button
