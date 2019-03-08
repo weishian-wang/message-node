@@ -13,6 +13,7 @@ import teal from '@material-ui/core/colors/teal';
 const styles = theme => ({
   root: {
     width: 'auto',
+    marginTop: theme.spacing.unit * 10,
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(550 + theme.spacing.unit * 3 * 2)]: {
