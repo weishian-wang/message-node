@@ -159,7 +159,7 @@ class Feed extends Component {
         pages.push({
           text: i,
           active: i === currentPage,
-          onClick: this.changePage.bind(this, i)
+          onClick: i === currentPage ? null : this.changePage.bind(this, i)
         });
       }
       this.setState({ pages: pages });
