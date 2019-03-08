@@ -9,6 +9,7 @@ const navbuttons = [
 ];
 
 const NavButtons = props => [
+  props.isAuth && (props.userEmail),
   ...navbuttons
     .filter(item => item.auth === props.isAuth)
     .map(item => (

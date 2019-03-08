@@ -206,6 +206,7 @@ class App extends Component {
           <NavButtons
             isAuth={this.state.isAuth}
             onSignout={this.signoutHandler}
+            userEmail={this.state.userEmail}
           />
         </TopAppBar>
         {routes}
