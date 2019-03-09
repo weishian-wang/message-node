@@ -96,13 +96,17 @@ class Feed extends Component {
         this.state.totalPosts / this.state.postPerPage
       );
       if (direction === 'next') {
-        page++;
-        if (page > lastPage) return;
+        if (++page > lastPage) {
+          this.setState({ postsLoading: false });
+          return;
+        }
         this.setState({ currentPage: page });
       }
       if (direction === 'previous') {
-        page--;
-        if (page <= 0) return;
+        if (--page <= 0) {
+          this.setState({ postsLoading: false });
+          return;
+        }
         this.setState({ currentPage: page });
       }
     }
