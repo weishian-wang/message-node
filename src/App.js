@@ -32,7 +32,8 @@ class App extends Component {
       return;
     }
     const userId = localStorage.getItem('userId');
-    this.setState({ isAuth: true, token: token, userId: userId });
+    const userEmail = localStorage.getItem('userEmail');
+    this.setState({ isAuth: true, token: token, userId: userId, userEmail: userEmail });
   }
 
   signoutHandler = () => {
