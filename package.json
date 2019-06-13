@@ -9,10 +9,10 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "calidation": "^1.15.1",
+    "calidation": "^1.16.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.0.1",
     "react-scripts": "^3.0.1",
     "socket.io-client": "^2.2.0"
   },
